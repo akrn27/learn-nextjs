@@ -1,7 +1,7 @@
 import React from "react";
 
 export const withAuth = (Component) => {
-  return function WithAuth(props) {
+  return (props) => {
     const isLogin = true;
 
     if (!isLogin) return <div>Anda harus login</div>;

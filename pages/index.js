@@ -1,10 +1,25 @@
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
 
 const LayoutComponent = dynamic(() => import("@/layout"), {
   loading: () => <p>Loading...</p>,
 });
 
 export default function Main() {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/hello");
+        const data = await response.json();
+        console.log("response => ", data);
+      } catch (error) {
+        console.log("err => ", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="text-red-400">

@@ -3,7 +3,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Head from "next/head";
 
-export const Layout = ({ children, metaTitle, metaDescription }) => {
+const Layout = ({ children, metaTitle, metaDescription }) => {
   return (
     <>
       <div>
@@ -26,3 +26,5 @@ export const Layout = ({ children, metaTitle, metaDescription }) => {
     </>
   );
 };
+
+export default Layout;

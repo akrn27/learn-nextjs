@@ -1,7 +1,7 @@
 import Head from "next/head";
-import { Layout } from "@/layout";
+import Layout from "@/layout";
 
-export default function Profile() {
+const Profile = () => {
   return (
     <>
       <Layout>
@@ -11,4 +11,6 @@ export default function Profile() {
       </Layout>
     </>
   );
-}
+};
+
+export default Profile;

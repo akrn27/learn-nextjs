@@ -60,9 +60,14 @@ const Header = () => {
               <Link href="/profile">Profile</Link>
             </li>
           </div>
-          <li>
-            <Link href="/users">Users</Link>
-          </li>
+          <div className="flex gap-5">
+            <li>
+              <Link href="/users">Users</Link>
+            </li>
+            <li>
+              <Link href="/notes">Notes</Link>
+            </li>
+          </div>
         </ul>
       </div>
     </>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const LayoutComponent = dynamic(() => import("@/layout"), {
   loading: () => <p>Loading...</p>,
@@ -22,6 +23,23 @@ const Notes = () => {
   }, []);
 
   console.log(notes);
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(
+        `https://paace-f178cafcae7b.nevacloud.io/api/notes/delete/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const result = await res.json();
+      if (result) {
+        router.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -63,18 +81,18 @@ const Notes = () => {
                   {note.description}
                 </span>
                 <div class="flex mt-4 space-x-3 md:mt-6">
-                  <a
-                    href="#"
+                  <Link
+                    href={`/notes/edit/${note.id}`}
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
                     Edit
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <button
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-center bg-red border border-gray-300 rounded-lg hover:bg-red-500 focus:ring-4 focus:outline-none bg-red-400 text-white focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700"
+                    onClick={() => handleDelete(note.id)}
                   >
                     Delete
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

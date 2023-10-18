@@ -12,7 +12,9 @@ const Notes = () => {
 
   useEffect(() => {
     const getProducts = async () => {
-      const res = await fetch("https://dummyjson.com/products");
+      const res = await fetch(
+        "https://paace-f178cafcae7b.nevacloud.io/api/notes"
+      );
       const resProduct = await res.json();
       setNotes(resProduct);
     };
@@ -48,22 +50,17 @@ const Notes = () => {
         </button>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 my-8">
-          {notes?.products.map((note, index) => (
+          {notes?.data.map((note, index) => (
             <div
               class="w-full sm:max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
               key={index}
             >
               <div class="flex flex-col items-center pb-10">
-                <img
-                  class="w-24 h-24 mb-3 rounded-full shadow-lg"
-                  src={note.images[0]}
-                  alt={note.brand}
-                />
                 <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
                   {note.title}
                 </h5>
                 <span class="text-sm text-gray-500 dark:text-gray-400">
-                  {note.category}
+                  {note.description}
                 </span>
                 <div class="flex mt-4 space-x-3 md:mt-6">
                   <a
@@ -74,7 +71,7 @@ const Notes = () => {
                   </a>
                   <a
                     href="#"
-                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-red border border-gray-300 rounded-lg hover:bg-red-500 focus:ring-4 focus:outline-none bg-red-400 text-white focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700"
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-center bg-red border border-gray-300 rounded-lg hover:bg-red-500 focus:ring-4 focus:outline-none bg-red-400 text-white focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700"
                   >
                     Delete
                   </a>

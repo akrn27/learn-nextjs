@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+import { useMutation } from "@/hooks/useMutation";
 
 const LayoutComponent = dynamic(() => import("@/layout"), {
   loading: () => <p>Loading...</p>,
@@ -8,6 +9,7 @@ const LayoutComponent = dynamic(() => import("@/layout"), {
 
 const AddNotes = () => {
   const router = useRouter();
+  const { mutate } = useMutation();
   const [notes, setNotes] = useState({
     title: "",
     description: "",
@@ -15,26 +17,12 @@ const AddNotes = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { title, description } = notes;
-    try {
-      const response = await fetch(
-        "https://paace-f178cafcae7b.nevacloud.io/api/notes",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title: title,
-            description: description,
-          }),
-        }
-      );
-      router.push("/notes");
-      console.log(response.json());
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await mutate({
+      url: "https://paace-f178cafcae7b.nevacloud.io/api/notes",
+      payload: notes,
+    });
+    console.log("response => ", response);
+    router.push("/notes");
   };
 
   return (

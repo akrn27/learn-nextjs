@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { useMutation } from "@/hooks/useMutation";
 
 const LayoutComponent = dynamic(() => import("@/layout"), {
   loading: () => <p>Loading...</p>,
@@ -10,6 +11,7 @@ const LayoutComponent = dynamic(() => import("@/layout"), {
 const editNote = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { mutate } = useMutation();
 
   const [notes, setNotes] = useState({
     title: "",
@@ -31,25 +33,13 @@ const editNote = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { title, description } = notes;
-    try {
-      const response = await fetch(
-        `https://paace-f178cafcae7b.nevacloud.io/api/notes/update/${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title: title,
-            description: description,
-          }),
-        }
-      );
-      router.push("/notes");
-      console.log(response.json());
-    } catch (error) {
-      console.log(error);
-    }
+
+    const response = await mutate({
+      url: `https://paace-f178cafcae7b.nevacloud.io/api/notes/update/${id}`,
+      method: "PATCH",
+      payload: { title: title, description: description },
+    });
+    router.push("/notes");
   };
 
   return (

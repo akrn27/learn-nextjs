@@ -5,15 +5,23 @@ import Link from "next/link";
 import { useQueries } from "@/hooks/useQueries";
 import { Spinner } from "flowbite-react";
 import { useMutation } from "@/hooks/useMutation";
+import fetcher from "@/utils/fetcher";
+import useSWR from "swr";
 
 const LayoutComponent = dynamic(() => import("@/layout"), {
   loading: () => <p>Loading...</p>,
 });
 
 const Notes = () => {
-  const { data, isLoading } = useQueries({
-    prefixUrl: "https://paace-f178cafcae7b.nevacloud.io/api/notes",
-  });
+  // const { data, isLoading } = useQueries({
+  //   prefixUrl: "https://paace-f178cafcae7b.nevacloud.io/api/notes",
+  // });
+  const { data, isLoading } = useSWR(
+    "https://paace-f178cafcae7b.nevacloud.io/api/notes",
+    fetcher,
+    { revalidateOnFocus: true }
+  );
+
   const [notes, setNotes] = useState();
   const router = useRouter();
   const { mutate } = useMutation();

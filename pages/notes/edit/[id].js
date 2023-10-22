@@ -8,27 +8,18 @@ const LayoutComponent = dynamic(() => import("@/layout"), {
   loading: () => <p>Loading...</p>,
 });
 
-const editNote = () => {
+const editNote = ({ note }) => {
   const router = useRouter();
   const { id } = router.query;
   const { mutate } = useMutation();
 
   const [notes, setNotes] = useState({
-    title: "",
-    description: "",
+    title: note.data.title,
+    description: note.data.description,
   });
 
-  useEffect(() => {
-    const getNotes = async () => {
-      const response = await fetch(
-        `https://paace-f178cafcae7b.nevacloud.io/api/notes/${id}`
-      );
-      const resNote = await response.json();
-      setNotes(resNote?.data);
-    };
-    getNotes();
-  }, [id]);
-  console.log("=> ", notes);
+  useEffect(() => {}, [id]);
+  console.log("=> ", note);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -93,6 +84,20 @@ const editNote = () => {
       </LayoutComponent>
     </div>
   );
+};
+
+export const getServerSideProps = async ({ params }) => {
+  try {
+    const { id } = params;
+    const response = await fetch(
+      `https://paace-f178cafcae7b.nevacloud.io/api/notes/${id}`
+    );
+    const note = await response.json();
+    return { props: { note } };
+  } catch (error) {
+    console.log(error);
+    return { props: { note: null } };
+  }
 };
 
 export default editNote;

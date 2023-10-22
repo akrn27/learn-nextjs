@@ -11,7 +11,9 @@ export default async function handler(req, res) {
     // const res = await fetch("https://dummyjson.com/users");
     // const data = await res.json({ ...res });
     // return data;
-    const response = await (await fetch("https://dummyjson.com/users")).json();
+    const response = await (
+      await fetch("https://paace-f178cafcae7b.nevacloud.io/api/notes")
+    ).json();
     res.status(200).json({ ...response });
   } catch (error) {
     console.log(error);

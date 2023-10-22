@@ -337,6 +337,7 @@ const Notes = ({ notes }) => {
   );
 };
 
+// Implementasi getServerSideProps
 export const getServerSideProps = async () => {
   try {
     const response = await fetch("http://localhost:3000/api/notes");

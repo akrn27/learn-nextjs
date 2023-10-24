@@ -7,8 +7,11 @@ import { useQueries } from "@/hooks/useQueries";
 import Cookies from "js-cookie";
 import { useMutation } from "@/hooks/useMutation";
 import { useRouter } from "next/router";
+import { useContext } from "react";
+import { UserContext } from "@/context/userContext";
 
 const Header = () => {
+  const userData = useContext(UserContext);
   const router = useRouter();
   const { data } = useQueries({
     prefixUrl: "https://paace-f178cafcae7b.nevacloud.io/api/user/me",
@@ -99,7 +102,7 @@ const Header = () => {
               <Link href="/notes">Notes</Link>
             </li>
             <li>
-              <Dropdown label={`${data?.data.name}`} dismissOnClick={false}>
+              <Dropdown label={`${userData?.name}`} dismissOnClick={false}>
                 <Dropdown.Item onClick={() => handleLogout()}>
                   Log out
                 </Dropdown.Item>

@@ -2,9 +2,40 @@ import React from "react";
 import { withAuth } from "../with-auth";
 import Link from "next/link";
 import { useState } from "react";
+import { Dropdown } from "flowbite-react";
+import { useQueries } from "@/hooks/useQueries";
+import Cookies from "js-cookie";
+import { useMutation } from "@/hooks/useMutation";
+import { useRouter } from "next/router";
 
 const Header = () => {
+  const router = useRouter();
+  const { data } = useQueries({
+    prefixUrl: "https://paace-f178cafcae7b.nevacloud.io/api/user/me",
+    headers: {
+      Authorization: `Bearer ${Cookies.get("user_token")}`,
+    },
+  });
+  const { mutate } = useMutation();
   const [isOpen, setIsOpen] = useState(false);
+
+  // console.log(data);
+
+  const handleLogout = async () => {
+    const response = await mutate({
+      url: "https://paace-f178cafcae7b.nevacloud.io/api/logout",
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("user_token")}`,
+      },
+    });
+    if (!response?.success) {
+      console.log("Gagal Logout");
+    } else {
+      Cookies.remove("user_token");
+      router.push("/login");
+    }
+  };
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -66,6 +97,13 @@ const Header = () => {
             </li>
             <li>
               <Link href="/notes">Notes</Link>
+            </li>
+            <li>
+              <Dropdown label={`${data?.data.name}`} dismissOnClick={false}>
+                <Dropdown.Item onClick={() => handleLogout()}>
+                  Log out
+                </Dropdown.Item>
+              </Dropdown>
             </li>
           </div>
         </ul>
